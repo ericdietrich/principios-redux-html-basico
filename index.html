@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div style="padding: 20px; margin: 30px; background: #eee;">
+    <p>Soma: <span id="value"></span></p>
+    <button id="increment">Clique + </button>
+    <button id="decrement">Clique - </button>
+  </div>
+  <!-- script -->
+  <script>
+    /* Estado Inicial */
+    const estadoInicial = {
+      value : 0
+    }
+
+    /* Definindo o Store */
+    const store = Redux.createStore(contadorReducer);
+
+    /* Função Reducer */
+    function contadorReducer(state = estadoInicial, action){
+
+      switch (action.type) {
+        case "counter/incremented":
+          return state = {...state, value: state.value + 1}
+        case "counter/decremented": 
+          return state = {...state, value: state.value - 1}
+        default: 
+          return state
+      }
+    } 
+
+    /* Actions */
+    document.getElementById("increment").addEventListener('click', () => {
+      store.dispatch({type: "counter/incremented"})
+    });
+    document.getElementById("decrement").addEventListener('click', () => {
+      store.dispatch({type: "counter/decremented"})
+    });
+
+    /* Rederizar UI */
+    const valueElement = document.getElementById("value");
+    
+    function render() {  
+      const state = store.getState();
+      valueElement.innerText = state.value.toString();
+    }
+    render();
+    store.subscribe(render);
+
+
+
+
+
+  </script>
+</body>
+</html>
